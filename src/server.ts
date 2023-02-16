@@ -5,7 +5,7 @@ import { createServer } from "http" // CORE MODULE
 import { newConnectionHandler } from "./socket"
 import productsRouter from "./api/products"
 import usersRouter from "./api/users"
-import { badRequestHandler, genericErrorHandler } from "./errorHandlers"
+import { badRequestHandler, unauthorizedHandler, genericErrorHandler } from "./errorHandlers"
 
 const expressServer = express()
 
@@ -25,6 +25,7 @@ expressServer.use("/users", usersRouter)
 
 // *********************************** ERROR HANDLERS ****************************
 expressServer.use(badRequestHandler)
+expressServer.use(unauthorizedHandler)
 expressServer.use(genericErrorHandler)
 
 export { httpServer, expressServer }

@@ -1,5 +1,6 @@
 import mongoose from "mongoose"
 import bcrypt from "bcrypt"
+import { UserDocument, UserModel } from "./types"
 
 const { Schema, model } = mongoose
 
@@ -46,7 +47,7 @@ UsersSchema.methods.toJSON = function () {
   return user
 }
 
-UsersSchema.static("checkCredentials", async function (email, password) {
+UsersSchema.static("checkCredentials", async function (email: string, password: string) {
   // My own custom method attached to the UsersModel
 
   // Given email and plain text password, this method has to check in the db if the user exists (by email)
@@ -54,7 +55,7 @@ UsersSchema.static("checkCredentials", async function (email, password) {
   // Then it should return an useful response
 
   // 1. Find by email
-  const user = await this.findOne({ email }) //"this" here represents the User Model
+  const user: UserDocument = await this.findOne({ email }) //"this" here represents the User Model
 
   if (user) {
     // 2. If the user is found --> compare plain password with the hashed one
@@ -78,4 +79,4 @@ UsersSchema.static("checkCredentials", async function (email, password) {
 // if(user){// credentials are good}
 // else { // credentials not good}
 
-export default model("User", UsersSchema)
+export default model<UserDocument, UserModel>("User", UsersSchema)

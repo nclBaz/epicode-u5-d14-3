@@ -9,6 +9,14 @@ export const badRequestHandler: ErrorRequestHandler = (err, req, res, next) => {
   }
 }
 
+export const unauthorizedHandler: ErrorRequestHandler = (err, req, res, next) => {
+  if (err.status === 401) {
+    res.status(401).send({ message: err.message })
+  } else {
+    next(err)
+  }
+}
+
 export const genericErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
   console.log(err)
   res.status(500).send({ message: "We gonna fix it asap!" })

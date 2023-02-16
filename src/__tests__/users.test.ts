@@ -36,14 +36,27 @@ afterAll(async () => {
   await mongoose.connection.close()
 })
 
+let accessToken: string
+
 describe("Test APIs", () => {
   it("Should test that POST /users returns a valid _id and 201", async () => {
     const response = await client.post("/users").send(validUser).expect(201)
     expect(response.body._id).toBeDefined()
   })
 
-  it("Should test that GET /users returns a success status and a body", async () => {
-    const response = await client.get("/users").expect(200)
+  it("Should test that POST /users/login with right credentials gives us back an access token", async () => {
+    const response = await client.post("/users/login").send(validUser)
+    expect(response.status).toBe(200)
+    expect(response.body).toHaveProperty("accessToken")
+    accessToken = response.body.accessToken
+  })
+
+  it("Should test that GET /users returns 401 if you don't provide a valid accessToken", async () => {
+    await client.get("/users").expect(401)
+  })
+
+  it("Should test that GET /users returns a success status if we provide a valid accessToken", async () => {
+    const response = await client.get("/users").set("Authorization", `Bearer ${accessToken}`).expect(200)
     console.log(response.body)
   })
 
