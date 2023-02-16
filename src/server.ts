@@ -4,7 +4,7 @@ import cors from "cors"
 import mongoose from "mongoose"
 import { Server } from "socket.io"
 import { createServer } from "http" // CORE MODULE
-import { newConnectionHandler } from "./socket/index.js"
+import { newConnectionHandler } from "./socket"
 
 const expressServer = express()
 const port = process.env.PORT || 3001
@@ -21,7 +21,7 @@ io.on("connection", newConnectionHandler) // "connection" is NOT a custom event!
 
 // *********************************** ERROR HANDLERS ****************************
 
-mongoose.connect(process.env.MONGO_URL)
+mongoose.connect(process.env.MONGO_URL!)
 
 mongoose.connection.on("connected", () => {
   httpServer.listen(port, () => {
