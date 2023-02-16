@@ -1,6 +1,13 @@
-let onlineUsers = []
+import { Socket } from "socket.io"
 
-export const newConnectionHandler = newClient => {
+interface OnlineUser {
+  username: string
+  socketId: string
+}
+
+let onlineUsers: OnlineUser[] = []
+
+export const newConnectionHandler = (newClient: Socket) => {
   console.log("NEW CONNECTION:", newClient.id)
 
   // 1. Emit a "welcome" event to the connected client
