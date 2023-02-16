@@ -4,6 +4,7 @@ import { Server } from "socket.io"
 import { createServer } from "http" // CORE MODULE
 import { newConnectionHandler } from "./socket"
 import productsRouter from "./api/products"
+import usersRouter from "./api/users"
 import { badRequestHandler, genericErrorHandler } from "./errorHandlers"
 
 const expressServer = express()
@@ -20,6 +21,7 @@ expressServer.use(express.json())
 
 // ************************************ ENDPOINTS ********************************
 expressServer.use("/products", productsRouter)
+expressServer.use("/users", usersRouter)
 
 // *********************************** ERROR HANDLERS ****************************
 expressServer.use(badRequestHandler)
